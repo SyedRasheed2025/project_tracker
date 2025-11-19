@@ -16,129 +16,57 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   
-  <body class="bg-gray-50">
+  <body class="bg-gray-900 text-white">
     <!-- This is where our React app will be attached -->
     <div id="root"></div>
 
     <!-- 
       4. START of our React code. 
-      Note the type="text/babel" which tells Babel to translate this! 
     -->
     <script type="text/babel">
       
-      // --- MODIFIED --- Added useEffect
-      // We get useState, useMemo, and useEffect from the global React object
       const { useState, useMemo, useEffect } = React;
 
-      // --- Icon Components (using inline SVG for simplicity) ---
+      // --- Icon Components ---
 
       const ArrowLeft = (props) => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          {...props}
-        >
-          <line x1="19" y1="12" x2="5" y2="12"></line>
-          <polyline points="12 19 5 12 12 5"></polyline>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
       );
 
       const X = (props) => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          {...props}
-        >
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       );
 
       const CheckSquare = (props) => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          {...props}
-        >
-          <polyline points="9 11 12 14 22 4"></polyline>
-          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
       );
 
       const Square = (props) => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          {...props}
-        >
-          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
       );
 
       const MoreVertical = (props) => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          {...props}
-        >
-          <circle cx="12" cy="12" r="1"></circle>
-          <circle cx="12" cy="5" r="1"></circle>
-          <circle cx="12" cy="19" r="1"></circle>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
       );
 
-      // --- NEW ICON ---
       const Plus = (props) => (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          {...props}
-        >
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      );
+      
+      const Clock = (props) => (
+         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      );
+
+      const User = (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+      );
+
+      const Trash = (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+      );
+
+      const Edit = (props) => (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
       );
 
 
@@ -148,61 +76,18 @@
         { id: 2, name: 'Data collection', status: 'not_completed', comment: '' },
         { id: 3, name: 'Modelling', status: 'not_completed', comment: '' },
         { id: 4, name: 'Model verification', status: 'not_completed', comment: '' },
-        { id: 5, name: '2F', status: 'not_completed', comment: '' },
+        { id: 5, name: 'LF', status: 'not_completed', comment: '' },
         { id: 6, name: 'SC', status: 'not_completed', comment: '' },
         { id: 7, name: 'Coordination', status: 'not_completed', comment: '' },
         { id: 8, name: 'AF', status: 'not_completed', comment: '' },
       ];
 
-      const initialProjects = [
-        {
-          id: 1,
-          name: 'Sabic',
-          status: 'ongoing',
-          tasks: JSON.parse(JSON.stringify(initialTasks.map(t => ({...t, id: `p1-t${t.id}`})))),
-        },
-        {
-          id: 2,
-          name: 'Maaden',
-          status: 'ongoing',
-          tasks: JSON.parse(JSON.stringify(initialTasks.map(t => ({...t, id: `p2-t${t.id}`})))),
-        },
-        {
-          id: 3,
-          name: 'Aramco',
-          status: 'ongoing',
-          tasks: JSON.parse(JSON.stringify(initialTasks.map(t => ({...t, id: `p3-t${t.id}`})))),
-        },
-        {
-          id: 4,
-          name: 'Chevron Philips',
-          status: 'ongoing',
-          tasks: JSON.parse(JSON.stringify(initialTasks.map(t => ({...t, id: `p4-t${t.id}`})))),
-        },
-        {
-          id: 5,
-          name: 'Project Alpha',
-          status: 'pending',
-          tasks: [],
-        },
-        {
-          id: 6,
-          name: 'Project Beta',
-          status: 'completed',
-          tasks: JSON.parse(JSON.stringify(initialTasks.map(t => ({...t, id: `p6-t${t.id}`, status: 'completed' })))),
-        },
-      ];
+      // CLEARED Initial Projects (Start Fresh)
+      const initialProjects = []; 
       
-      // --- LocalStorage Key ---
       const PROJECTS_STORAGE_KEY = 'projectTrackerApp-projects';
 
       // --- Helper Function ---
-      /**
-       * Calculates the completion percentage of a project based on its tasks.
-       * 'completed' = 1 point
-       * 'working_on_it' = 0.5 points
-       * 'not_completed' = 0 points
-       */
       const calculateCompletion = (tasks) => {
         if (!tasks || tasks.length === 0) return 0;
         const totalTasks = tasks.length;
@@ -217,88 +102,76 @@
         return Math.round((score / totalTasks) * 100);
       };
 
-      // --- Page Components ---
+      const getTitleForStatus = (status) => {
+        switch (status) {
+          case 'ongoing': return 'Active Projects';
+          case 'pending': return 'New Projects';
+          case 'suspended': return 'Pending Projects'; 
+          case 'completed': return 'Completed Projects';
+          default: return 'Projects';
+        }
+      };
 
-      /**
-       * Homepage Component
-       * Displays the three main navigation boxes.
-       */
+      // --- Components ---
+
       const HomePage = ({ setPage, projects }) => {
-        const ongoingCount = projects.filter(p => p.status === 'ongoing').length;
+        const activeCount = projects.filter(p => p.status === 'ongoing').length;
         const completedCount = projects.filter(p => p.status === 'completed').length;
-        const pendingCount = projects.filter(p => p.status === 'pending').length;
+        const newCount = projects.filter(p => p.status === 'pending').length;
+        const suspendedCount = projects.filter(p => p.status === 'suspended').length;
 
         return (
-          // --- MODIFIED --- Centered layout for dark homepage
-          <div className="min-h-screen p-8 md:p-16 flex flex-col justify-center items-center">
-            <h1 className="text-4xl md:text-5xl font-extrabold mb-12 text-center">
+          <div className="min-h-screen p-8 md:p-12 flex flex-col justify-center items-center bg-gradient-to-br from-gray-900 to-gray-800">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-12 text-center text-white tracking-tight">
               Project Tracking Dashboard
             </h1>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
-              <HomeCard
-                title="Ongoing Projects"
-                count={ongoingCount}
-                color="bg-blue-500"
-                onClick={() => setPage('ongoing')}
-              />
-              <HomeCard
-                title="Completed Projects"
-                count={completedCount}
-                color="bg-green-500"
-                onClick={() => setPage('completed')}
-              />
-              <HomeCard
-                title="Pending Projects"
-                count={pendingCount}
-                color="bg-gray-500"
-                onClick={() => setPage('pending')}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+              <HomeCard title="Active Projects" count={activeCount} color="bg-blue-600" onClick={() => setPage('ongoing')} />
+              <HomeCard title="New Projects" count={newCount} color="bg-indigo-500" onClick={() => setPage('pending')} />
+              <HomeCard title="Pending Project" count={suspendedCount} color="bg-yellow-500" onClick={() => setPage('suspended')} />
+              <HomeCard title="Completed Projects" count={completedCount} color="bg-green-600" onClick={() => setPage('completed')} />
             </div>
           </div>
         );
       };
 
       const HomeCard = ({ title, count, color, onClick }) => (
-        // --- MODIFIED --- Enhanced shadows for dark mode
-        <div
-          className={`p-6 ${color} text-white rounded-lg shadow-xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl`}
-          onClick={onClick}
-        >
-          <h2 className="text-2xl font-semibold">{title}</h2>
-          <p className="text-4xl font-bold mt-4">{count}</p>
+        <div className={`p-6 ${color} text-white rounded-xl shadow-xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl border border-white/10`} onClick={onClick}>
+          <h2 className="text-lg font-medium truncate opacity-90">{title}</h2>
+          <p className="text-4xl font-bold mt-3">{count}</p>
         </div>
       );
 
-      /**
-       * Project List Page Component
-       * Displays a list of projects based on status.
-       */
-      const ProjectListPage = ({ setPage, projects, status, setSelectedProjectId, onUpdateStatus, onOpenAddModal }) => {
+      const ProjectListPage = ({ setPage, projects, status, setSelectedProjectId, onUpdateStatus, onOpenAddModal, onDeleteProject, onEditProject }) => {
         const projectList = useMemo(() => {
           return projects.filter(p => p.status === status);
         }, [projects, status]);
 
-        const title = status.charAt(0).toUpperCase() + status.slice(1) + " Projects";
+        const title = getTitleForStatus(status);
 
         return (
-          <div className="p-8">
+          <div className="p-8 min-h-screen">
             <Header 
               title={title} 
               onBack={() => setPage('home')}
-              showAddButton={status === 'pending'}
+              showAddButton={status === 'pending'} 
               onAdd={onOpenAddModal}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
               {projectList.length === 0 ? (
-                <p className="text-gray-500 col-span-full">No projects in this category.</p>
+                <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-400">
+                    <p className="text-lg">No projects in this category.</p>
+                </div>
               ) : (
                 projectList.map(project => (
                   <ProjectCard
                     key={project.id}
                     project={project}
                     onUpdateStatus={onUpdateStatus}
+                    onDelete={onDeleteProject}
+                    onEdit={onEditProject}
                     onClick={() => {
-                      if (status === 'ongoing' || status === 'completed') {
+                      if (status === 'ongoing' || status === 'completed' || status === 'suspended') {
                         setSelectedProjectId(project.id);
                         setPage('detail');
                       }
@@ -311,326 +184,248 @@
         );
       };
 
-      const ProjectCard = ({ project, onClick, onUpdateStatus }) => {
+      const ProjectCard = ({ project, onClick, onUpdateStatus, onDelete, onEdit }) => {
         const completion = useMemo(() => calculateCompletion(project.tasks), [project.tasks]);
         const [menuOpen, setMenuOpen] = useState(false);
+        
+        // --- Days Calculation ---
+        let daysRemaining = 0;
+        let timePercentage = 0;
+        let isOverdue = false;
 
-        const handleCloseProject = (e) => {
-          e.stopPropagation();
-          if (completion === 100) {
-            onUpdateStatus(project.id, 'completed');
-          }
-          setMenuOpen(false);
-        };
+        // Only calculate if start date exists (Active projects)
+        if (project.status === 'ongoing' && project.startDate && project.duration) {
+            const oneDay = 24 * 60 * 60 * 1000;
+            const elapsedDays = (Date.now() - project.startDate) / oneDay;
+            daysRemaining = Math.ceil(project.duration - elapsedDays);
+            
+            // Calculate percentage for bar width
+            // 100% means full time remaining, 0% means no time remaining
+            timePercentage = Math.min(100, Math.max(0, (daysRemaining / project.duration) * 100));
+            
+            if (daysRemaining < 0) {
+                isOverdue = true;
+                daysRemaining = Math.abs(daysRemaining);
+            }
+        }
 
-        const handleStartProject = (e) => {
-          e.stopPropagation();
-          onUpdateStatus(project.id, 'ongoing');
-          setMenuOpen(false);
-        };
-
-        const toggleMenu = (e) => {
-          e.stopPropagation();
-          setMenuOpen(prev => !prev);
-        };
+        const handleCloseProject = (e) => { e.stopPropagation(); if (completion === 100) onUpdateStatus(project.id, 'completed'); setMenuOpen(false); };
+        const handleStartProject = (e) => { e.stopPropagation(); onUpdateStatus(project.id, 'ongoing'); setMenuOpen(false); };
+        const handleMoveToPending = (e) => { e.stopPropagation(); onUpdateStatus(project.id, 'suspended'); setMenuOpen(false); };
+        const handleResumeProject = (e) => { e.stopPropagation(); onUpdateStatus(project.id, 'ongoing'); setMenuOpen(false); };
+        const handleDeleteProject = (e) => { e.stopPropagation(); onDelete(project.id); setMenuOpen(false); };
+        const handleEditProject = (e) => { e.stopPropagation(); onEdit(project); setMenuOpen(false); };
+        
+        const toggleMenu = (e) => { e.stopPropagation(); setMenuOpen(prev => !prev); };
 
         return (
           <div
-            className={`p-6 bg-white rounded-lg shadow-lg relative ${
-              project.status !== 'pending'
-                ? 'cursor-pointer hover:shadow-xl transition-shadow'
-                : ''
-            }`}
+            className={`p-6 bg-gray-800 border border-gray-700 rounded-xl shadow-lg relative ${project.status !== 'pending' ? 'cursor-pointer hover:border-gray-500 transition-colors' : ''}`}
             onClick={onClick}
           >
-            {project.status === 'ongoing' && (
-              <div className="absolute top-4 right-4">
-                <button
-                  onClick={toggleMenu}
-                  className="p-1 rounded-full text-gray-500 hover:bg-gray-200"
-                >
-                  <MoreVertical className="w-5 h-5" />
-                </button>
-                {menuOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200"
-                    onMouseLeave={() => setMenuOpen(false)} // Close menu on mouse leave
-                  >
-                    <button
-                      onClick={handleCloseProject}
-                      className={`block w-full text-left px-4 py-2 text-sm ${
-                        completion === 100
-                          ? 'text-gray-700 hover:bg-gray-100'
-                          : 'text-gray-400 cursor-not-allowed'
-                      }`}
-                      disabled={completion !== 100}
-                      title={completion !== 100 ? 'Project must be 100% complete to close' : ''}
-                    >
-                      Close Project
-                    </button>
+            {/* Menus */}
+            <div className="absolute top-4 right-4">
+               <button onClick={toggleMenu} className="p-1 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors"><MoreVertical className="w-5 h-5" /></button>
+               {menuOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-md shadow-xl z-20 overflow-hidden" onMouseLeave={() => setMenuOpen(false)}>
+                    
+                    {/* Active Project Options */}
+                    {project.status === 'ongoing' && (
+                        <>
+                            <button onClick={handleEditProject} className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 flex items-center">
+                                <Edit className="w-4 h-4 mr-2" /> Edit Project Details
+                            </button>
+                            <button onClick={handleMoveToPending} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Move to Pending Project</button>
+                            <button onClick={handleCloseProject} className={`block w-full text-left px-4 py-2 text-sm ${completion === 100 ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-500 cursor-not-allowed'}`} disabled={completion !== 100}>Close Project</button>
+                        </>
+                    )}
+                    
+                    {/* New Project Options */}
+                    {project.status === 'pending' && (
+                        <button onClick={handleStartProject} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Start Project</button>
+                    )}
+                    
+                    {/* Suspended Project Options */}
+                    {project.status === 'suspended' && (
+                        <button onClick={handleResumeProject} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Resume Project</button>
+                    )}
+                    
+                    {/* Delete is available for all */}
+                    <div className="border-t border-gray-700 mt-1">
+                        <button onClick={handleDeleteProject} className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 flex items-center">
+                            <Trash className="w-4 h-4 mr-2" /> Delete Project
+                        </button>
+                    </div>
                   </div>
+               )}
+            </div>
+
+            <h3 className="text-xl font-bold text-white pr-8 mb-2">{project.name}</h3>
+            
+            {/* Manager Name */}
+            {project.manager && (
+                <div className="flex items-center text-gray-400 text-sm mb-4">
+                    <User className="w-4 h-4 mr-2" />
+                    <span>{project.manager}</span>
+                </div>
+            )}
+
+            {/* Logic for Active Projects (Bar charts) */}
+            {project.status === 'ongoing' && (
+              <div className="space-y-4">
+                {/* Task Progress */}
+                <div>
+                    <div className="flex justify-between items-center mb-1">
+                        <span className="text-xs font-medium text-gray-400">Task Completion</span>
+                        <span className={`text-xs font-bold ${completion === 100 ? 'text-green-400' : 'text-blue-400'}`}>{completion}%</span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2">
+                        <div className={`${completion === 100 ? 'bg-green-500' : 'bg-blue-500'} h-2 rounded-full`} style={{ width: `${completion}%` }}></div>
+                    </div>
+                </div>
+
+                {/* Days Remaining Bar */}
+                {project.duration && (
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-medium text-gray-400 flex items-center">
+                                <Clock className="w-3 h-3 mr-1" />
+                                {isOverdue ? 'Overdue by' : 'Time Remaining'}
+                            </span>
+                            <span className={`text-xs font-bold ${isOverdue ? 'text-red-400' : 'text-amber-400'}`}>
+                                {daysRemaining} days
+                            </span>
+                        </div>
+                        <div className="w-full bg-gray-700 rounded-full h-2">
+                            <div 
+                                className={`${isOverdue ? 'bg-red-500' : 'bg-amber-500'} h-2 rounded-full transition-all duration-500`} 
+                                style={{ width: isOverdue ? '100%' : `${timePercentage}%` }}
+                            ></div>
+                        </div>
+                    </div>
                 )}
               </div>
             )}
             
-            {project.status === 'pending' && (
-              <div className="absolute top-4 right-4">
-                <button
-                  onClick={toggleMenu}
-                  className="p-1 rounded-full text-gray-500 hover:bg-gray-200"
-                >
-                  <MoreVertical className="w-5 h-5" />
-                </button>
-                {menuOpen && (
-                  <div
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border border-gray-200"
-                    onMouseLeave={() => setMenuOpen(false)} // Close menu on mouse leave
-                  >
-                    <button
-                      onClick={handleStartProject}
-                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Start Project
-                    </button>
-                  </div>
-                )}
-              </div>
+            {/* Completed Status */}
+            {project.status === 'completed' && (
+                <div className="mt-4 px-3 py-1 bg-green-900/50 border border-green-800 text-green-300 text-sm rounded-full inline-block font-medium">
+                    Completed
+                </div>
+            )}
+             {project.status === 'suspended' && (
+                <div className="mt-4 px-3 py-1 bg-yellow-900/50 border border-yellow-800 text-yellow-300 text-sm rounded-full inline-block font-medium">
+                    Pending / Suspended
+                </div>
+            )}
+             {project.status === 'pending' && (
+                <div className="mt-4">
+                    <span className="text-sm text-gray-400">Duration: {project.duration} days</span>
+                </div>
             )}
 
-
-            <h3 className="text-xl font-bold text-gray-800 pr-8">{project.name}</h3>
-            {project.status !== 'pending' && (
-              <div className="mt-4">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-sm font-medium text-gray-600">Progress</span>
-                  <span
-                    className={`text-sm font-bold ${
-                      completion === 100 ? 'text-green-600' : 'text-blue-600'
-                    }`}
-                  >
-                    {completion}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div
-                    className={`${
-                      completion === 100 ? 'bg-green-600' : 'bg-blue-600'
-                    } h-2.5 rounded-full`}
-                    style={{ width: `${completion}%` }}
-                  ></div>
-                </div>
-              </div>
-            )}
           </div>
         );
       };
 
-      /**
-       * Project Detail Page Component
-       * Shows the 8 tasks for a specific project.
-       */
       const ProjectDetailPage = ({ setPage, project, openModal, closeProject }) => {
         const completion = useMemo(() => calculateCompletion(project.tasks), [project.tasks]);
-
         const getStatusColor = (status) => {
           switch (status) {
-            case 'completed':
-              return 'border-green-500';
-            case 'working_on_it':
-              return 'border-yellow-500';
-            default:
-              return 'border-gray-300';
+            case 'completed': return 'border-green-500';
+            case 'working_on_it': return 'border-yellow-500';
+            default: return 'border-gray-600';
           }
         };
-        
         const getStatusText = (status) => {
           switch (status) {
-            case 'completed':
-              return 'Completed';
-            case 'working_on_it':
-              return 'Working on it';
-            default:
-              return 'Not Completed';
+            case 'completed': return 'Completed';
+            case 'working_on_it': return 'Working on it';
+            default: return 'Not Completed';
           }
         };
 
         return (
-          <div className="p-8">
-            <Header
-              title={project.name}
-              onBack={() => setPage(project.status)}
-            />
-
-            <div className="my-6 p-4 bg-white rounded-lg shadow">
-              <div className="flex justify-between items-center mb-2">
-                  <span className="text-lg font-medium text-gray-700">Overall Progress</span>
-                  <span className={`text-lg font-bold ${
-                      completion === 100 ? 'text-green-600' : 'text-blue-600'
-                    }`}>{completion}%</span>
+          <div className="p-8 min-h-screen">
+            <Header title={project.name} onBack={() => setPage(project.status)} />
+            <div className="my-6 p-6 bg-gray-800 border border-gray-700 rounded-xl shadow-lg">
+              <div className="flex justify-between items-center mb-3">
+                  <span className="text-lg font-medium text-gray-300">Overall Progress</span>
+                  <span className={`text-lg font-bold ${completion === 100 ? 'text-green-400' : 'text-blue-400'}`}>{completion}%</span>
               </div>
-              <div className="w-full bg-gray-200 rounded-full h-4">
-                  <div
-                    className={`${
-                        completion === 100 ? 'bg-green-600' : 'bg-blue-600'
-                      } h-4 rounded-full transition-all duration-500`}
-                    style={{ width: `${completion}%` }}
-                  ></div>
+              <div className="w-full bg-gray-700 rounded-full h-4">
+                  <div className={`${completion === 100 ? 'bg-green-500' : 'bg-blue-500'} h-4 rounded-full transition-all duration-500`} style={{ width: `${completion}%` }}></div>
               </div>
             </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {project.tasks.map(task => (
-                <div
-                  key={task.id}
-                  className={`p-4 bg-white rounded-lg shadow-md border-l-4 ${getStatusColor(task.status)} cursor-pointer hover:shadow-lg transition-shadow`}
-                  onClick={() => openModal(task)}
-                >
-                  <h4 className="text-lg font-semibold text-gray-800">{task.name}</h4>
-                  <p className="text-sm text-gray-500 mt-2">{getStatusText(task.status)}</p>
-                  {task.comment && (
-                    <p className="text-sm text-gray-600 mt-2 italic truncate">"{task.comment}"</p>
-                  )}
+                <div key={task.id} className={`p-5 bg-gray-800 border border-gray-700 rounded-xl shadow-md border-l-4 ${getStatusColor(task.status)} cursor-pointer hover:bg-gray-750 hover:shadow-xl transition-all`} onClick={() => openModal(task)}>
+                  <h4 className="text-lg font-semibold text-white">{task.name}</h4>
+                  <p className="text-sm text-gray-400 mt-2">{getStatusText(task.status)}</p>
+                  {task.comment && (<p className="text-sm text-gray-500 mt-2 italic truncate">"{task.comment}"</p>)}
                 </div>
               ))}
             </div>
-            
             {completion === 100 && project.status === 'ongoing' && (
               <div className="mt-8 flex justify-center">
-                <button
-                  onClick={closeProject}
-                  className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors"
-                >
-                  Close Project
-                </button>
+                <button onClick={closeProject} className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors">Close Project</button>
               </div>
             )}
           </div>
         );
       };
 
-      /**
-       * Header component with a back button and title
-       */
       const Header = ({ title, onBack, showAddButton, onAdd }) => (
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
-            <button
-              onClick={onBack}
-              className="p-2 rounded-full hover:bg-gray-200 transition-colors mr-4"
-            >
-              <ArrowLeft className="text-gray-700" />
-            </button>
-            <h1 className="text-3xl font-bold text-gray-800">{title}</h1>
+            <button onClick={onBack} className="p-2 rounded-full hover:bg-gray-800 text-white transition-colors mr-4"><ArrowLeft /></button>
+            <h1 className="text-3xl font-bold text-white">{title}</h1>
           </div>
           {showAddButton && (
-            <button 
-              onClick={onAdd}
-              className="p-2 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-colors"
-              title="Add New Project"
-            >
-              <Plus className="w-6 h-6" />
-            </button>
+            <button onClick={onAdd} className="p-2 rounded-full bg-blue-600 text-white shadow-lg hover:bg-blue-700 transition-colors" title="Add New Project"><Plus className="w-6 h-6" /></button>
           )}
         </div>
       );
 
-
-      /**
-       * Task Modal Component
-       * Popup for updating task status and adding comments.
-       */
       const TaskModal = ({ isOpen, closeModal, task, saveTask }) => {
         const [status, setStatus] = useState('not_completed');
         const [comment, setComment] = useState('');
         const [showComment, setShowComment] = useState(false);
-
-        // When the modal opens, update its internal state
-        React.useEffect(() => {
-          if (task) {
-            setStatus(task.status);
-            setComment(task.comment);
-            setShowComment(!!task.comment);
-          }
-        }, [task]);
-
+        useEffect(() => { if (task) { setStatus(task.status); setComment(task.comment); setShowComment(!!task.comment); } }, [task]);
         if (!isOpen || !task) return null;
-
-        const handleSave = () => {
-          const finalComment = showComment ? comment : '';
-          saveTask(task.id, status, finalComment);
-          closeModal();
-        };
+        const handleSave = () => { saveTask(task.id, status, showComment ? comment : ''); closeModal(); };
 
         return (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-lg">
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-8 w-full max-w-lg">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">{task.name}</h2>
-                <button
-                  onClick={closeModal}
-                  className="p-1 rounded-full hover:bg-gray-200"
-                >
-                  <X className="text-gray-600" />
-                </button>
+                <h2 className="text-2xl font-bold text-white">{task.name}</h2>
+                <button onClick={closeModal} className="p-1 rounded-full hover:bg-gray-700 text-gray-400 hover:text-white"><X /></button>
               </div>
-              
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-700">Update Status</h3>
-                <RadioOption
-                  label="Not Completed"
-                  value="not_completed"
-                  checked={status === 'not_completed'}
-                  onChange={setStatus}
-                />
-                <RadioOption
-                  label="Still working on it"
-                  value="working_on_it"
-                  checked={status === 'working_on_it'}
-                  onChange={setStatus}
-                />
-                <RadioOption
-                  label="Completed"
-                  value="completed"
-                  checked={status === 'completed'}
-                  onChange={setStatus}
-                />
+                <h3 className="text-lg font-semibold text-gray-300">Update Status</h3>
+                <RadioOption label="Not Completed" value="not_completed" checked={status === 'not_completed'} onChange={setStatus} />
+                <RadioOption label="Still working on it" value="working_on_it" checked={status === 'working_on_it'} onChange={setStatus} />
+                <RadioOption label="Completed" value="completed" checked={status === 'completed'} onChange={setStatus} />
               </div>
-              
               <div className="mt-6">
-                <label className="flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox"
-                    className="hidden"
-                    checked={showComment}
-                    onChange={() => setShowComment(!showComment)}
-                  />
-                  {showComment ? <CheckSquare className="text-blue-600 mr-2" /> : <Square className="text-gray-400 mr-2" />}
-                  <span className="text-gray-700">Add/Edit Comment</span>
+                <label className="flex items-center cursor-pointer text-gray-300">
+                  <input type="checkbox" className="hidden" checked={showComment} onChange={() => setShowComment(!showComment)} />
+                  {showComment ? <CheckSquare className="text-blue-400 mr-2" /> : <Square className="text-gray-500 mr-2" />}
+                  <span>Add/Edit Comment</span>
                 </label>
-                
                 {showComment && (
-                  <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    className="w-full h-24 p-2 border border-gray-300 rounded-lg mt-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                    placeholder="Enter your comment..."
-                  ></textarea>
+                    <textarea 
+                        value={comment} 
+                        onChange={(e) => setComment(e.target.value)} 
+                        className="w-full h-24 p-3 mt-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none resize-none" 
+                        placeholder="Enter your comment..."
+                    ></textarea>
                 )}
               </div>
-              
               <div className="mt-8 flex justify-end space-x-4">
-                <button
-                  onClick={closeModal}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Save
-                </button>
+                <button onClick={closeModal} className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">Cancel</button>
+                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save</button>
               </div>
             </div>
           </div>
@@ -638,298 +433,225 @@
       };
 
       const RadioOption = ({ label, value, checked, onChange }) => (
-        <label className="flex items-center p-3 -ml-3 rounded-lg cursor-pointer hover:bg-gray-100">
-          <input
-            type="radio"
-            name="status"
-            value={value}
-            checked={checked}
-            onChange={() => onChange(value)}
-            className="w-5 h-5 text-blue-600 form-radio focus:ring-blue-500"
-          />
-          <span className="ml-3 text-gray-700">{label}</span>
+        <label className="flex items-center p-3 -ml-3 rounded-lg cursor-pointer hover:bg-gray-700/50 transition-colors">
+          <input type="radio" name="status" value={value} checked={checked} onChange={() => onChange(value)} className="w-5 h-5 text-blue-500 bg-gray-900 border-gray-600 focus:ring-blue-500" />
+          <span className="ml-3 text-gray-300">{label}</span>
         </label>
       );
 
-      // --- NEW MODAL ---
-      /**
-       * Add Project Modal Component
-       * Popup for creating a new pending project.
-       */
       const AddProjectModal = ({ isOpen, onClose, onSave }) => {
         const [name, setName] = useState('');
+        const [days, setDays] = useState('');
+        const [manager, setManager] = useState('');
 
-        const handleSave = () => {
-          if (name.trim()) {
-            onSave(name.trim());
-            setName('');
-            onClose();
-          }
+        const handleSave = () => { 
+            if (name.trim() && days && manager.trim()) { 
+                onSave(name.trim(), parseInt(days), manager.trim()); 
+                setName(''); setDays(''); setManager(''); onClose(); 
+            } 
         };
-
-        const handleCancel = () => {
-          setName('');
-          onClose();
-        }
-
+        const handleCancel = () => { setName(''); setDays(''); setManager(''); onClose(); }
         if (!isOpen) return null;
 
         return (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-lg">
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-8 w-full max-w-lg">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Add New Project</h2>
-                <button
-                  onClick={handleCancel}
-                  className="p-1 rounded-full hover:bg-gray-200"
-                >
-                  <X className="text-gray-600" />
-                </button>
+                <h2 className="text-2xl font-bold text-white">Add New Project</h2>
+                <button onClick={handleCancel} className="p-1 rounded-full hover:bg-gray-700 text-gray-400 hover:text-white"><X /></button>
               </div>
               
-              <div>
-                <label htmlFor="company-name" className="block text-sm font-medium text-gray-700">
-                  Company Name
-                </label>
-                <input
-                  type="text"
-                  id="company-name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  placeholder="e.g., Project Omega"
-                />
+              <div className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Project Name</label>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="block w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none" placeholder="e.g., Project Omega" />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Project Manager Name</label>
+                    <input type="text" value={manager} onChange={(e) => setManager(e.target.value)} className="block w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none" placeholder="e.g., John Doe" />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Duration (Days)</label>
+                    <input type="number" value={days} onChange={(e) => setDays(e.target.value)} className="block w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none" placeholder="e.g., 30" />
+                </div>
               </div>
-              
+
               <div className="mt-8 flex justify-end space-x-4">
-                <button
-                  onClick={handleCancel}
-                  className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                >
-                  Save Project
-                </button>
+                <button onClick={handleCancel} className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">Cancel</button>
+                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save Project</button>
               </div>
             </div>
           </div>
         );
       };
 
+      const EditProjectModal = ({ isOpen, onClose, onSave, project }) => {
+        const [name, setName] = useState('');
+        const [days, setDays] = useState('');
+        const [manager, setManager] = useState('');
 
-      // --- Main App Component ---
-      // We've removed the 'export default'
-      function App() {
-        const [page, setPage] = useState('home'); // 'home', 'ongoing', 'completed', 'pending', 'detail'
+        useEffect(() => {
+            if (project) {
+                setName(project.name);
+                setDays(project.duration);
+                setManager(project.manager);
+            }
+        }, [project]);
+
+        const handleSave = () => { 
+            if (name.trim() && days && manager.trim()) { 
+                onSave(project.id, { name: name.trim(), duration: parseInt(days), manager: manager.trim() }); 
+                onClose(); 
+            } 
+        };
         
-        // --- MODIFIED --- Load initial state from localStorage
+        if (!isOpen || !project) return null;
+
+        return (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+            <div className="bg-gray-800 border border-gray-700 rounded-xl shadow-2xl p-8 w-full max-w-lg">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Edit Project Details</h2>
+                <button onClick={onClose} className="p-1 rounded-full hover:bg-gray-700 text-gray-400 hover:text-white"><X /></button>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Project Name</label>
+                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="block w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none" />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Project Manager Name</label>
+                    <input type="text" value={manager} onChange={(e) => setManager(e.target.value)} className="block w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none" />
+                </div>
+                <div>
+                    <label className="block text-sm font-medium text-gray-400 mb-1">Duration (Days)</label>
+                    <input type="number" value={days} onChange={(e) => setDays(e.target.value)} className="block w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none" />
+                </div>
+              </div>
+
+              <div className="mt-8 flex justify-end space-x-4">
+                <button onClick={onClose} className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">Cancel</button>
+                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save Changes</button>
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // --- Main App ---
+      function App() {
+        const [page, setPage] = useState('home'); 
         const [projects, setProjects] = useState(() => {
           const savedProjects = localStorage.getItem(PROJECTS_STORAGE_KEY);
           if (savedProjects) {
-            try {
-              return JSON.parse(savedProjects);
-            } catch (e) {
-              console.error("Failed to parse projects from localStorage", e);
-              // Fallback to initial projects if JSON is corrupt
-              return initialProjects;
-            }
+            try { return JSON.parse(savedProjects); } catch (e) { return initialProjects; }
           }
           return initialProjects;
         });
 
         const [selectedProjectId, setSelectedProjectId] = useState(null);
         const [modalTask, setModalTask] = useState(null);
-        
-        // --- NEW STATE ---
         const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+        const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+        const [editingProject, setEditingProject] = useState(null);
 
-        // --- NEW --- Save to localStorage on any change to projects
-        useEffect(() => {
-          localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects));
-        }, [projects]);
-
-
-        const selectedProject = useMemo(() => {
-          return projects.find(p => p.id === selectedProjectId);
-        }, [projects, selectedProjectId]);
-
-        // --- Modal Logic ---
+        useEffect(() => { localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(projects)); }, [projects]);
+        const selectedProject = useMemo(() => projects.find(p => p.id === selectedProjectId), [projects, selectedProjectId]);
         const openModal = (task) => setModalTask(task);
         const closeModal = () => setModalTask(null);
 
-        // --- Data Update Logic ---
-
-        // --- NEW FUNCTION ---
-        const addProject = (name) => {
+        const addProject = (name, days, manager) => {
           const newProject = {
-            id: Date.now(), // Simple unique ID
+            id: Date.now(),
             name: name,
+            manager: manager,
+            duration: days,
+            startDate: null, // Not started yet
             status: 'pending',
-            tasks: [] // Starts with no tasks
+            tasks: []
           };
           setProjects(prevProjects => [...prevProjects, newProject]);
           setIsAddModalOpen(false);
         };
+        
+        const deleteProject = (id) => {
+            if(confirm('Are you sure you want to delete this project? This action cannot be undone.')) {
+                 setProjects(prevProjects => prevProjects.filter(p => p.id !== id));
+            }
+        };
+        
+        const openEditModal = (project) => {
+            setEditingProject(project);
+            setIsEditModalOpen(true);
+        };
 
+        const updateProjectDetails = (id, updatedData) => {
+            setProjects(prevProjects => prevProjects.map(p => p.id === id ? { ...p, ...updatedData } : p));
+        };
 
-        /**
-         * Generic function to update a project's status
-         */
         const updateProjectStatus = (id, newStatus) => {
           setProjects(prevProjects =>
             prevProjects.map(p => {
               if (p.id !== id) return p;
+              let updates = { status: newStatus };
 
-              // **NEW LOGIC**: If starting a pending project, add its tasks
+              // When moving from pending to ongoing, populate tasks and set startDate
               if (p.status === 'pending' && newStatus === 'ongoing') {
-                const newTasks = JSON.parse(JSON.stringify(initialTasks)).map((t, index) => ({
-                  ...t,
-                  id: `p${p.id}-t${index + 1}` // Ensure unique task IDs
-                }));
-                return { ...p, status: newStatus, tasks: newTasks };
+                const newTasks = JSON.parse(JSON.stringify(initialTasks)).map((t, index) => ({...t, id: `p${p.id}-t${index + 1}`}));
+                updates.tasks = newTasks;
+                updates.startDate = Date.now(); 
+              }
+              
+              // If resuming from suspended (or anywhere) and startDate is missing, start the clock now
+              if (newStatus === 'ongoing' && !p.startDate) {
+                 updates.startDate = Date.now();
               }
 
-              // Existing logic
-              return { ...p, status: newStatus };
+              return { ...p, ...updates };
             })
           );
         };
         
-        /**
-         * Updates a specific task's status and comment
-         */
         const saveTask = (taskId, newStatus, newComment) => {
           setProjects(prevProjects =>
             prevProjects.map(project => {
               if (project.id !== selectedProjectId) return project;
-
-              // Update the specific task
-              const newTasks = project.tasks.map(task =>
-                task.id === taskId
-                  ? { ...task, status: newStatus, comment: newComment }
-                  : task
-              );
-
-              // Recalculate completion and check for status change
+              const newTasks = project.tasks.map(task => task.id === taskId ? { ...task, status: newStatus, comment: newComment } : task);
               const newCompletion = calculateCompletion(newTasks);
               let updatedStatus = project.status;
-
-              if (project.status === 'completed' && newCompletion < 100) {
-                updatedStatus = 'ongoing';
-              }
-              
-              // Note: We don't auto-move to 'completed' at 100% here,
-              // as that's handled by the manual "Close Project" buttons.
-
-              return {
-                ...project,
-                tasks: newTasks,
-                status: updatedStatus,
-              };
+              if (project.status === 'completed' && newCompletion < 100) updatedStatus = 'ongoing';
+              return { ...project, tasks: newTasks, status: updatedStatus };
             })
           );
         };
 
-        /**
-         * Moves a project from 'ongoing' to 'completed' (called from Detail page)
-         */
-        const closeProjectFromDetail = () => {
-          updateProjectStatus(selectedProjectId, 'completed');
-          setPage('ongoing'); // Go back to the ongoing list
-        };
+        const closeProjectFromDetail = () => { updateProjectStatus(selectedProjectId, 'completed'); setPage('ongoing'); };
 
-        // --- NEW --- Dynamic background class
-        const appBgClass =
-          page === 'home'
-            ? 'bg-gradient-to-br from-gray-800 to-gray-900 text-white'
-            : 'bg-gray-100 text-gray-900'; // --- MODIFIED --- Added text color for non-home
-
-        // --- Page Rendering Logic ---
         const renderPage = () => {
           switch (page) {
-            case 'home':
-              return <HomePage setPage={setPage} projects={projects} />;
-            case 'ongoing':
-              return (
-                <ProjectListPage
-                  setPage={setPage}
-                  projects={projects}
-                  status="ongoing"
-                  setSelectedProjectId={setSelectedProjectId}
-                  onUpdateStatus={updateProjectStatus}
-                  onOpenAddModal={() => setIsAddModalOpen(true)} // Not used, but harmless
-                />
-              );
-            case 'completed':
-              return (
-                <ProjectListPage
-                  setPage={setPage}
-                  projects={projects}
-                  status="completed"
-                  setSelectedProjectId={setSelectedProjectId}
-                  onUpdateStatus={updateProjectStatus}
-                  onOpenAddModal={() => setIsAddModalOpen(true)} // Corrected typo from onOpenAddMModal
-                />
-              );
-            case 'pending':
-              return (
-                <ProjectListPage
-                  setPage={setPage}
-                  projects={projects}
-                  status="pending"
-                  setSelectedProjectId={setSelectedProjectId}
-                  onUpdateStatus={updateProjectStatus}
-                  onOpenAddModal={() => setIsAddModalOpen(true)} // --- MODIFIED --- This is now used
-                />
-              );
-            case 'detail':
-              if (selectedProject) {
-                return (
-                  <ProjectDetailPage
-                    setPage={setPage}
-                    project={selectedProject}
-                    openModal={openModal}
-                    closeProject={closeProjectFromDetail}
-                  />
-                );
-              }
-              // Fallback if no project is selected
-              setPage('home');
-              return null;
-            default:
-              return <HomePage setPage={setPage} projects={projects} />;
+            case 'home': return <HomePage setPage={setPage} projects={projects} />;
+            case 'ongoing': return <ProjectListPage setPage={setPage} projects={projects} status="ongoing" setSelectedProjectId={setSelectedProjectId} onUpdateStatus={updateProjectStatus} onDeleteProject={deleteProject} onEditProject={openEditModal} />;
+            case 'completed': return <ProjectListPage setPage={setPage} projects={projects} status="completed" setSelectedProjectId={setSelectedProjectId} onUpdateStatus={updateProjectStatus} onDeleteProject={deleteProject} onEditProject={openEditModal} />;
+            case 'pending': return <ProjectListPage setPage={setPage} projects={projects} status="pending" setSelectedProjectId={setSelectedProjectId} onUpdateStatus={updateProjectStatus} onOpenAddModal={() => setIsAddModalOpen(true)} onDeleteProject={deleteProject} onEditProject={openEditModal} />;
+            case 'suspended': return <ProjectListPage setPage={setPage} projects={projects} status="suspended" setSelectedProjectId={setSelectedProjectId} onUpdateStatus={updateProjectStatus} onDeleteProject={deleteProject} onEditProject={openEditModal} />;
+            case 'detail': return selectedProject ? <ProjectDetailPage setPage={setPage} project={selectedProject} openModal={openModal} closeProject={closeProjectFromDetail} /> : (setPage('home'), null);
+            default: return <HomePage setPage={setPage} projects={projects} />;
           }
         };
 
         return (
-          // --- MODIFIED --- Applied the dynamic background class
-          <div className={`min-h-screen ${appBgClass}`}>
+          <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white selection:bg-blue-500 selection:text-white">
             {renderPage()}
-            <TaskModal
-              isOpen={!!modalTask}
-              closeModal={closeModal}
-              task={modalTask}
-              saveTask={saveTask}
-            />
-            {/* --- NEW --- Render the AddProjectModal */}
-            <AddProjectModal
-              isOpen={isAddModalOpen}
-              onClose={() => setIsAddModalOpen(false)}
-              onSave={addProject}
-            />
+            <TaskModal isOpen={!!modalTask} closeModal={closeModal} task={modalTask} saveTask={saveTask} />
+            <AddProjectModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onSave={addProject} />
+            <EditProjectModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} onSave={updateProjectDetails} project={editingProject} />
           </div>
         );
       }
       
-      // 5. This is the magic line that starts the React app
-      // It finds the <div id="root"></div> and injects our <App /> component
       ReactDOM.render(<App />, document.getElementById('root'));
 
     </script>
-    <!-- END of our React code -->
   </body>
 </html>
