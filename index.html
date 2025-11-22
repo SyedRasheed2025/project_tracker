@@ -69,20 +69,39 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
       );
 
+      // --- Constants ---
+      // Expanded palette with Golden Black, Pink, Brown, etc.
+      const CARD_GRADIENTS = [
+            "bg-gradient-to-br from-blue-600 to-indigo-700",       // Classic Blue
+            "bg-gradient-to-br from-amber-500 to-neutral-900",     // Golden Black
+            "bg-gradient-to-br from-pink-600 to-rose-800",         // Pink
+            "bg-gradient-to-br from-emerald-600 to-teal-700",      // Emerald Green
+            "bg-gradient-to-br from-amber-800 to-orange-900",      // Deep Brown
+            "bg-gradient-to-br from-purple-600 to-indigo-800",     // Royal Purple
+            "bg-gradient-to-br from-stone-600 to-neutral-800",     // Stone/Black
+            "bg-gradient-to-br from-fuchsia-600 to-pink-700",      // Vivid Fuchsia
+            "bg-gradient-to-br from-cyan-600 to-blue-800",         // Deep Ocean
+            "bg-gradient-to-br from-red-600 to-rose-800",          // Crimson Red
+            "bg-gradient-to-br from-lime-600 to-green-800",        // Olive/Lime
+            "bg-gradient-to-br from-slate-600 to-gray-800",        // Steel Gray
+            "bg-gradient-to-br from-violet-600 to-purple-800",     // Deep Violet
+            "bg-gradient-to-br from-orange-600 to-red-700",        // Burnt Orange
+            "bg-gradient-to-br from-teal-600 to-cyan-800",         // Dark Teal
+            "bg-gradient-to-br from-indigo-500 to-blue-600"        // Indigo Blue
+      ];
 
       // --- Initial Data ---
       const initialTasks = [
-        { id: 1, name: 'Kick off meeting', status: 'not_completed', comment: '' },
-        { id: 2, name: 'Data collection', status: 'not_completed', comment: '' },
-        { id: 3, name: 'Modelling', status: 'not_completed', comment: '' },
-        { id: 4, name: 'Model verification', status: 'not_completed', comment: '' },
-        { id: 5, name: 'LF', status: 'not_completed', comment: '' },
-        { id: 6, name: 'SC', status: 'not_completed', comment: '' },
-        { id: 7, name: 'Coordination', status: 'not_completed', comment: '' },
-        { id: 8, name: 'AF', status: 'not_completed', comment: '' },
+        { id: 1, name: 'Kick off meeting', status: 'not_completed', progress: 0, comment: '' },
+        { id: 2, name: 'Data collection', status: 'not_completed', progress: 0, comment: '' },
+        { id: 3, name: 'Modelling', status: 'not_completed', progress: 0, comment: '' },
+        { id: 4, name: 'Model verification', status: 'not_completed', progress: 0, comment: '' },
+        { id: 5, name: 'LF', status: 'not_completed', progress: 0, comment: '' },
+        { id: 6, name: 'SC', status: 'not_completed', progress: 0, comment: '' },
+        { id: 7, name: 'Coordination', status: 'not_completed', progress: 0, comment: '' },
+        { id: 8, name: 'AF', status: 'not_completed', progress: 0, comment: '' },
       ];
 
-      // CLEARED Initial Projects (Start Fresh)
       const initialProjects = []; 
       
       const PROJECTS_STORAGE_KEY = 'projectTrackerApp-projects';
@@ -90,16 +109,36 @@
       // --- Helper Function ---
       const calculateCompletion = (tasks) => {
         if (!tasks || tasks.length === 0) return 0;
-        const totalTasks = tasks.length;
-        let score = 0;
+        
+        const specialWeights = {
+            'Kick off meeting': 2,     
+            'Model verification': 5    
+        };
+
+        let weightedScore = 0;
+        let otherTasks = [];
+
         tasks.forEach(task => {
-          if (task.status === 'completed') {
-            score += 1;
-          } else if (task.status === 'working_on_it') {
-            score += 0.5;
-          }
+            if (specialWeights.hasOwnProperty(task.name)) {
+                const weight = specialWeights[task.name];
+                const progress = task.progress || 0;
+                weightedScore += (progress / 100) * weight;
+            } else {
+                otherTasks.push(task);
+            }
         });
-        return Math.round((score / totalTasks) * 100);
+
+        if (otherTasks.length > 0) {
+            const remainingPercentage = 100 - 2 - 5; // 93%
+            const weightPerOtherTask = remainingPercentage / otherTasks.length;
+            
+            otherTasks.forEach(task => {
+                const progress = task.progress || 0;
+                weightedScore += (progress / 100) * weightPerOtherTask;
+            });
+        }
+
+        return Math.min(100, Math.round(weightedScore));
       };
 
       const getTitleForStatus = (status) => {
@@ -126,10 +165,30 @@
               Project Tracking Dashboard
             </h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
-              <HomeCard title="Active Projects" count={activeCount} color="bg-blue-600" onClick={() => setPage('ongoing')} />
-              <HomeCard title="New Projects" count={newCount} color="bg-indigo-500" onClick={() => setPage('pending')} />
-              <HomeCard title="Pending Project" count={suspendedCount} color="bg-yellow-500" onClick={() => setPage('suspended')} />
-              <HomeCard title="Completed Projects" count={completedCount} color="bg-green-600" onClick={() => setPage('completed')} />
+              <HomeCard 
+                title="Active Projects" 
+                count={activeCount} 
+                color="bg-gradient-to-br from-blue-600 to-indigo-700" 
+                onClick={() => setPage('ongoing')} 
+              />
+              <HomeCard 
+                title="New Projects" 
+                count={newCount} 
+                color="bg-gradient-to-br from-purple-600 to-fuchsia-700" 
+                onClick={() => setPage('pending')} 
+              />
+              <HomeCard 
+                title="Pending Project" 
+                count={suspendedCount} 
+                color="bg-gradient-to-br from-rose-600 to-red-700" 
+                onClick={() => setPage('suspended')} 
+              />
+              <HomeCard 
+                title="Completed Projects" 
+                count={completedCount} 
+                color="bg-gradient-to-br from-emerald-500 to-green-600" 
+                onClick={() => setPage('completed')} 
+              />
             </div>
           </div>
         );
@@ -163,10 +222,12 @@
                     <p className="text-lg">No projects in this category.</p>
                 </div>
               ) : (
-                projectList.map(project => (
+                projectList.map((project, index) => (
                   <ProjectCard
                     key={project.id}
                     project={project}
+                    // Use the persisted color. Fallback to index based for old data.
+                    colorClass={project.color || CARD_GRADIENTS[index % CARD_GRADIENTS.length]}
                     onUpdateStatus={onUpdateStatus}
                     onDelete={onDeleteProject}
                     onEdit={onEditProject}
@@ -184,7 +245,7 @@
         );
       };
 
-      const ProjectCard = ({ project, onClick, onUpdateStatus, onDelete, onEdit }) => {
+      const ProjectCard = ({ project, colorClass, onClick, onUpdateStatus, onDelete, onEdit }) => {
         const completion = useMemo(() => calculateCompletion(project.tasks), [project.tasks]);
         const [menuOpen, setMenuOpen] = useState(false);
         
@@ -193,14 +254,10 @@
         let timePercentage = 0;
         let isOverdue = false;
 
-        // Only calculate if start date exists (Active projects)
         if (project.status === 'ongoing' && project.startDate && project.duration) {
             const oneDay = 24 * 60 * 60 * 1000;
             const elapsedDays = (Date.now() - project.startDate) / oneDay;
             daysRemaining = Math.ceil(project.duration - elapsedDays);
-            
-            // Calculate percentage for bar width
-            // 100% means full time remaining, 0% means no time remaining
             timePercentage = Math.min(100, Math.max(0, (daysRemaining / project.duration) * 100));
             
             if (daysRemaining < 0) {
@@ -216,55 +273,77 @@
         const handleDeleteProject = (e) => { e.stopPropagation(); onDelete(project.id); setMenuOpen(false); };
         const handleEditProject = (e) => { e.stopPropagation(); onEdit(project); setMenuOpen(false); };
         
-        const toggleMenu = (e) => { e.stopPropagation(); setMenuOpen(prev => !prev); };
+        const toggleMenu = (e) => { 
+            e.preventDefault();
+            e.stopPropagation(); 
+            setMenuOpen(prev => !prev); 
+        };
 
+        const closeMenu = (e) => {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            setMenuOpen(false);
+        };
+
+        // Using colorClass instead of fixed bg-gray-800
         return (
           <div
-            className={`p-6 bg-gray-800 border border-gray-700 rounded-xl shadow-lg relative ${project.status !== 'pending' ? 'cursor-pointer hover:border-gray-500 transition-colors' : ''}`}
+            className={`p-6 ${colorClass || 'bg-gray-800'} border border-white/20 rounded-xl shadow-lg relative ${menuOpen ? 'z-50 scale-105' : 'z-0'} ${project.status !== 'pending' && !menuOpen ? 'cursor-pointer transform hover:scale-105 transition-all duration-200' : ''}`}
             onClick={onClick}
           >
             {/* Menus */}
-            <div className="absolute top-4 right-4">
-               <button onClick={toggleMenu} className="p-1 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors"><MoreVertical className="w-5 h-5" /></button>
+            <div className="absolute top-4 right-4 z-50">
+               <button onClick={toggleMenu} className="p-2 rounded-full text-white/70 hover:bg-black/20 hover:text-white transition-colors relative z-50">
+                   <MoreVertical className="w-5 h-5" />
+               </button>
+               
                {menuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-md shadow-xl z-20 overflow-hidden" onMouseLeave={() => setMenuOpen(false)}>
-                    
-                    {/* Active Project Options */}
-                    {project.status === 'ongoing' && (
-                        <>
-                            <button onClick={handleEditProject} className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 flex items-center">
-                                <Edit className="w-4 h-4 mr-2" /> Edit Project Details
+                  <>
+                    {/* Invisible Backdrop to handle click-outside */}
+                    <div className="fixed inset-0 z-40 cursor-default" onClick={closeMenu}></div>
+
+                    {/* Menu Dropdown */}
+                    <div className="absolute right-0 mt-2 w-56 bg-gray-800 border border-gray-700 rounded-md shadow-2xl z-50 overflow-hidden">
+                        
+                        {/* Active Project Options */}
+                        {project.status === 'ongoing' && (
+                            <>
+                                <button onClick={handleEditProject} className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 flex items-center">
+                                    <Edit className="w-4 h-4 mr-2" /> Edit Project Details
+                                </button>
+                                <button onClick={handleMoveToPending} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Move to Pending Project</button>
+                                <button onClick={handleCloseProject} className={`block w-full text-left px-4 py-2 text-sm ${completion === 100 ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-500 cursor-not-allowed'}`} disabled={completion !== 100}>Close Project</button>
+                            </>
+                        )}
+                        
+                        {/* New Project Options */}
+                        {project.status === 'pending' && (
+                            <button onClick={handleStartProject} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Start Project</button>
+                        )}
+                        
+                        {/* Suspended Project Options */}
+                        {project.status === 'suspended' && (
+                            <button onClick={handleResumeProject} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Resume Project</button>
+                        )}
+                        
+                        {/* Delete is available for all */}
+                        <div className="border-t border-gray-700 mt-1">
+                            <button onClick={handleDeleteProject} className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 flex items-center">
+                                <Trash className="w-4 h-4 mr-2" /> Delete Project
                             </button>
-                            <button onClick={handleMoveToPending} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Move to Pending Project</button>
-                            <button onClick={handleCloseProject} className={`block w-full text-left px-4 py-2 text-sm ${completion === 100 ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-500 cursor-not-allowed'}`} disabled={completion !== 100}>Close Project</button>
-                        </>
-                    )}
-                    
-                    {/* New Project Options */}
-                    {project.status === 'pending' && (
-                        <button onClick={handleStartProject} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Start Project</button>
-                    )}
-                    
-                    {/* Suspended Project Options */}
-                    {project.status === 'suspended' && (
-                        <button onClick={handleResumeProject} className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Resume Project</button>
-                    )}
-                    
-                    {/* Delete is available for all */}
-                    <div className="border-t border-gray-700 mt-1">
-                        <button onClick={handleDeleteProject} className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-gray-700 hover:text-red-300 flex items-center">
-                            <Trash className="w-4 h-4 mr-2" /> Delete Project
-                        </button>
+                        </div>
                     </div>
-                  </div>
+                  </>
                )}
             </div>
 
-            <h3 className="text-xl font-bold text-white pr-8 mb-2">{project.name}</h3>
+            <h3 className="text-xl font-bold text-white pr-8 mb-2 drop-shadow-md">{project.name}</h3>
             
             {/* Manager Name */}
             {project.manager && (
-                <div className="flex items-center text-gray-400 text-sm mb-4">
+                <div className="flex items-center text-white/80 text-sm mb-4">
                     <User className="w-4 h-4 mr-2" />
                     <span>{project.manager}</span>
                 </div>
@@ -276,11 +355,12 @@
                 {/* Task Progress */}
                 <div>
                     <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs font-medium text-gray-400">Task Completion</span>
-                        <span className={`text-xs font-bold ${completion === 100 ? 'text-green-400' : 'text-blue-400'}`}>{completion}%</span>
+                        <span className="text-xs font-medium text-white/80">Task Completion</span>
+                        <span className="text-xs font-bold text-white">{completion}%</span>
                     </div>
-                    <div className="w-full bg-gray-700 rounded-full h-2">
-                        <div className={`${completion === 100 ? 'bg-green-500' : 'bg-blue-500'} h-2 rounded-full`} style={{ width: `${completion}%` }}></div>
+                    {/* Using bg-black/20 for the track so it looks good on gradients */}
+                    <div className="w-full bg-black/20 rounded-full h-2 border border-white/10">
+                        <div className="bg-white h-2 rounded-full shadow-sm" style={{ width: `${completion}%` }}></div>
                     </div>
                 </div>
 
@@ -288,17 +368,17 @@
                 {project.duration && (
                     <div>
                         <div className="flex justify-between items-center mb-1">
-                            <span className="text-xs font-medium text-gray-400 flex items-center">
+                            <span className="text-xs font-medium text-white/80 flex items-center">
                                 <Clock className="w-3 h-3 mr-1" />
                                 {isOverdue ? 'Overdue by' : 'Time Remaining'}
                             </span>
-                            <span className={`text-xs font-bold ${isOverdue ? 'text-red-400' : 'text-amber-400'}`}>
+                            <span className={`text-xs font-bold ${isOverdue ? 'text-red-200' : 'text-white'}`}>
                                 {daysRemaining} days
                             </span>
                         </div>
-                        <div className="w-full bg-gray-700 rounded-full h-2">
+                        <div className="w-full bg-black/20 rounded-full h-2 border border-white/10">
                             <div 
-                                className={`${isOverdue ? 'bg-red-500' : 'bg-amber-500'} h-2 rounded-full transition-all duration-500`} 
+                                className={`${isOverdue ? 'bg-red-400' : 'bg-yellow-300'} h-2 rounded-full transition-all duration-500 shadow-sm`} 
                                 style={{ width: isOverdue ? '100%' : `${timePercentage}%` }}
                             ></div>
                         </div>
@@ -309,18 +389,18 @@
             
             {/* Completed Status */}
             {project.status === 'completed' && (
-                <div className="mt-4 px-3 py-1 bg-green-900/50 border border-green-800 text-green-300 text-sm rounded-full inline-block font-medium">
+                <div className="mt-4 px-3 py-1 bg-white/20 border border-white/30 text-white text-sm rounded-full inline-block font-bold shadow-sm">
                     Completed
                 </div>
             )}
              {project.status === 'suspended' && (
-                <div className="mt-4 px-3 py-1 bg-yellow-900/50 border border-yellow-800 text-yellow-300 text-sm rounded-full inline-block font-medium">
+                <div className="mt-4 px-3 py-1 bg-black/20 border border-white/20 text-white text-sm rounded-full inline-block font-medium">
                     Pending / Suspended
                 </div>
             )}
              {project.status === 'pending' && (
                 <div className="mt-4">
-                    <span className="text-sm text-gray-400">Duration: {project.duration} days</span>
+                    <span className="text-sm text-white/80 font-medium">Duration: {project.duration} days</span>
                 </div>
             )}
 
@@ -330,19 +410,22 @@
 
       const ProjectDetailPage = ({ setPage, project, openModal, closeProject }) => {
         const completion = useMemo(() => calculateCompletion(project.tasks), [project.tasks]);
-        const getStatusColor = (status) => {
-          switch (status) {
-            case 'completed': return 'border-green-500';
-            case 'working_on_it': return 'border-yellow-500';
-            default: return 'border-gray-600';
-          }
+        
+        // Re-using the global palette for consistency
+        const cardGradients = CARD_GRADIENTS;
+
+        const getStatusText = (task) => {
+            const p = task.progress || 0;
+            if (p === 100) return 'Completed';
+            if (p === 0) return 'Not Started';
+            return `${p}% Completed`;
         };
-        const getStatusText = (status) => {
-          switch (status) {
-            case 'completed': return 'Completed';
-            case 'working_on_it': return 'Working on it';
-            default: return 'Not Completed';
-          }
+        
+        const getStatusTextColor = (task) => {
+          const p = task.progress || 0;
+          if (p === 100) return 'text-white/90 font-bold';
+          if (p > 0) return 'text-white/90 font-semibold';
+          return 'text-white/70';
         };
 
         return (
@@ -358,11 +441,18 @@
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {project.tasks.map(task => (
-                <div key={task.id} className={`p-5 bg-gray-800 border border-gray-700 rounded-xl shadow-md border-l-4 ${getStatusColor(task.status)} cursor-pointer hover:bg-gray-750 hover:shadow-xl transition-all`} onClick={() => openModal(task)}>
-                  <h4 className="text-lg font-semibold text-white">{task.name}</h4>
-                  <p className="text-sm text-gray-400 mt-2">{getStatusText(task.status)}</p>
-                  {task.comment && (<p className="text-sm text-gray-500 mt-2 italic truncate">"{task.comment}"</p>)}
+              {project.tasks.map((task, index) => (
+                <div 
+                    key={task.id} 
+                    className={`p-5 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-transform duration-200 border border-white/10 ${cardGradients[index % cardGradients.length]}`} 
+                    onClick={() => openModal(task)}
+                >
+                  <div className="flex justify-between items-start">
+                    <h4 className="text-lg font-bold text-white tracking-wide drop-shadow-sm">{task.name}</h4>
+                    <span className="bg-black/20 px-2 py-1 rounded text-xs font-bold text-white">{task.progress || 0}%</span>
+                  </div>
+                  <p className={`text-sm mt-2 ${getStatusTextColor(task)}`}>{getStatusText(task)}</p>
+                  {task.comment && (<p className="text-sm text-white/80 mt-2 italic truncate border-t border-white/20 pt-2">"{task.comment}"</p>)}
                 </div>
               ))}
             </div>
@@ -388,12 +478,25 @@
       );
 
       const TaskModal = ({ isOpen, closeModal, task, saveTask }) => {
-        const [status, setStatus] = useState('not_completed');
+        const [progress, setProgress] = useState(0);
         const [comment, setComment] = useState('');
         const [showComment, setShowComment] = useState(false);
-        useEffect(() => { if (task) { setStatus(task.status); setComment(task.comment); setShowComment(!!task.comment); } }, [task]);
+
+        useEffect(() => { 
+            if (task) { 
+                setProgress(task.progress || 0); 
+                setComment(task.comment); 
+                setShowComment(!!task.comment); 
+            } 
+        }, [task]);
+
         if (!isOpen || !task) return null;
-        const handleSave = () => { saveTask(task.id, status, showComment ? comment : ''); closeModal(); };
+        
+        const handleSave = () => { 
+            const finalProgress = Math.min(100, Math.max(0, parseInt(progress) || 0));
+            saveTask(task.id, finalProgress, showComment ? comment : ''); 
+            closeModal(); 
+        };
 
         return (
           <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
@@ -402,42 +505,51 @@
                 <h2 className="text-2xl font-bold text-white">{task.name}</h2>
                 <button onClick={closeModal} className="p-1 rounded-full hover:bg-gray-700 text-gray-400 hover:text-white"><X /></button>
               </div>
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-300">Update Status</h3>
-                <RadioOption label="Not Completed" value="not_completed" checked={status === 'not_completed'} onChange={setStatus} />
-                <RadioOption label="Still working on it" value="working_on_it" checked={status === 'working_on_it'} onChange={setStatus} />
-                <RadioOption label="Completed" value="completed" checked={status === 'completed'} onChange={setStatus} />
+              
+              <div className="space-y-6">
+                <div>
+                    <h3 className="text-lg font-semibold text-gray-300 mb-3">Update Progress (%)</h3>
+                    <div className="flex items-center">
+                        <input 
+                            type="number" 
+                            min="0" 
+                            max="100" 
+                            value={progress} 
+                            onChange={(e) => setProgress(e.target.value)} 
+                            className="w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white text-xl font-bold focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                        />
+                        <span className="ml-3 text-xl text-gray-400">%</span>
+                    </div>
+                    <div className="w-full bg-gray-700 rounded-full h-2 mt-4">
+                        <div className="bg-blue-500 h-2 rounded-full transition-all" style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}></div>
+                    </div>
+                </div>
+
+                <div className="pt-4 border-t border-gray-700">
+                  <label className="flex items-center cursor-pointer text-gray-300">
+                    <input type="checkbox" className="hidden" checked={showComment} onChange={() => setShowComment(!showComment)} />
+                    {showComment ? <CheckSquare className="text-blue-400 mr-2" /> : <Square className="text-gray-500 mr-2" />}
+                    <span>Add/Edit Comment</span>
+                  </label>
+                  {showComment && (
+                      <textarea 
+                          value={comment} 
+                          onChange={(e) => setComment(e.target.value)} 
+                          className="w-full h-24 p-3 mt-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none resize-none" 
+                          placeholder="Enter your comment..."
+                      ></textarea>
+                  )}
+                </div>
               </div>
-              <div className="mt-6">
-                <label className="flex items-center cursor-pointer text-gray-300">
-                  <input type="checkbox" className="hidden" checked={showComment} onChange={() => setShowComment(!showComment)} />
-                  {showComment ? <CheckSquare className="text-blue-400 mr-2" /> : <Square className="text-gray-500 mr-2" />}
-                  <span>Add/Edit Comment</span>
-                </label>
-                {showComment && (
-                    <textarea 
-                        value={comment} 
-                        onChange={(e) => setComment(e.target.value)} 
-                        className="w-full h-24 p-3 mt-3 bg-gray-900 border border-gray-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent focus:outline-none resize-none" 
-                        placeholder="Enter your comment..."
-                    ></textarea>
-                )}
-              </div>
+
               <div className="mt-8 flex justify-end space-x-4">
                 <button onClick={closeModal} className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">Cancel</button>
-                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save</button>
+                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save Progress</button>
               </div>
             </div>
           </div>
         );
       };
-
-      const RadioOption = ({ label, value, checked, onChange }) => (
-        <label className="flex items-center p-3 -ml-3 rounded-lg cursor-pointer hover:bg-gray-700/50 transition-colors">
-          <input type="radio" name="status" value={value} checked={checked} onChange={() => onChange(value)} className="w-5 h-5 text-blue-500 bg-gray-900 border-gray-600 focus:ring-blue-500" />
-          <span className="ml-3 text-gray-300">{label}</span>
-        </label>
-      );
 
       const AddProjectModal = ({ isOpen, onClose, onSave }) => {
         const [name, setName] = useState('');
@@ -532,7 +644,7 @@
 
               <div className="mt-8 flex justify-end space-x-4">
                 <button onClick={onClose} className="px-4 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors">Cancel</button>
-                <button onClick={handleSave} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save Changes</button>
+                <button onClick={onClose} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save Changes</button>
               </div>
             </div>
           </div>
@@ -562,6 +674,8 @@
         const closeModal = () => setModalTask(null);
 
         const addProject = (name, days, manager) => {
+          // Assign a permanent color from the palette based on how many projects exist
+          const color = CARD_GRADIENTS[projects.length % CARD_GRADIENTS.length];
           const newProject = {
             id: Date.now(),
             name: name,
@@ -569,6 +683,7 @@
             duration: days,
             startDate: null, // Not started yet
             status: 'pending',
+            color: color, // Persist the color
             tasks: []
           };
           setProjects(prevProjects => [...prevProjects, newProject]);
@@ -613,11 +728,23 @@
           );
         };
         
-        const saveTask = (taskId, newStatus, newComment) => {
+        const saveTask = (taskId, newProgress, newComment) => {
           setProjects(prevProjects =>
             prevProjects.map(project => {
               if (project.id !== selectedProjectId) return project;
-              const newTasks = project.tasks.map(task => task.id === taskId ? { ...task, status: newStatus, comment: newComment } : task);
+              
+              // Determine status text from progress number for backward compatibility
+              let derivedStatus = 'not_completed';
+              if (newProgress === 100) derivedStatus = 'completed';
+              else if (newProgress > 0) derivedStatus = 'working_on_it';
+
+              const newTasks = project.tasks.map(task => task.id === taskId ? { 
+                  ...task, 
+                  progress: newProgress, // Save numerical progress
+                  status: derivedStatus, // Save derived text status
+                  comment: newComment 
+                } : task);
+              
               const newCompletion = calculateCompletion(newTasks);
               let updatedStatus = project.status;
               if (project.status === 'completed' && newCompletion < 100) updatedStatus = 'ongoing';
